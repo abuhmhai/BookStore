@@ -1,14 +1,13 @@
 package com.bookStore.service;
 
-import com.bookStore.entity.Role;
-import com.bookStore.entity.User;
 import com.bookStore.repository.RoleRepository;
 import com.bookStore.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -40,8 +39,7 @@ public class UserService implements UserDetailsService {
 
     public void saveUser(User user) {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
-        // Assume "GUEST" role is the default
-        Role role = roleRepository.findByName("GUEST");
+        Role role = roleRepository.findByName("GUEST"); // Assign default "GUEST" role
         user.getRoles().add(role);
         userRepository.save(user);
     }
