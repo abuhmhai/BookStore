@@ -1,5 +1,6 @@
 package com.bookStore.controller;
 
+import com.bookStore.repository.BookRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
@@ -27,6 +28,19 @@ public class BookController {
 	public String home() {
 		return "home";
 	}
+
+
+	@Autowired
+	private BookRepository bookRepository;
+
+	@GetMapping("/search")
+	public String searchBooks(@RequestParam("name") String name, Model model) {
+		// Tìm các cuốn sách có tên chứa chuỗi tìm kiếm, không phân biệt chữ hoa chữ thường
+		List<Book> books = bookRepository.findByNameContainingIgnoreCase(name);
+		model.addAttribute("book", books);
+		return "searchResults"; // Đây là tên template bạn sẽ trả về
+	}
+
 
 	@GetMapping("/book_register")
 	@PreAuthorize("hasRole('ADMIN')")
