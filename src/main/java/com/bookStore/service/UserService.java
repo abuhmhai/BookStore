@@ -1,7 +1,7 @@
 package com.bookStore.service;
 
 import com.bookStore.entity.User;
-import com.bookStore.entity.Role;
+import com.bookStore.entity.RoleEnum;
 import com.bookStore.repository.RoleRepository;
 import com.bookStore.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,7 +12,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
-import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
 @Service
@@ -43,7 +42,7 @@ public class UserService implements UserDetailsService {
 
     public void saveUser(User user) {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
-        Role role = roleRepository.findByName("GUEST"); // Assign default "GUEST" role
+        RoleEnum role = roleRepository.findByName("GUEST"); // Assign default "GUEST" role
         user.getRoles().add(role);
         userRepository.save(user);
     }
