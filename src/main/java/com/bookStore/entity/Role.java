@@ -1,43 +1,43 @@
 package com.bookStore.entity;
 
-import javax.persistence.*;
-import java.util.Set;
+import jakarta.persistence.*;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.Table;
+import org.hibernate.annotations.UpdateTimestamp;
 
+import javax.persistence.*;
+import java.util.Date;
+
+@Table(name = "roles")
 @Entity
 public class Role {
-
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(nullable = false)
+    private Integer id;
 
-    private String name;
+    @Column(unique = true, nullable = false)
+    @Enumerated(EnumType.STRING)
+    private RoleEnum name;
 
-    @ManyToMany(mappedBy = "roles")
-    private Set<User> users;
+    @Column(nullable = false)
+    private String description;
 
-    // Getters and Setters
+    @CreationTimestamp
+    @Column(updatable = false, name = "created_at")
+    private Date createdAt;
 
-    public Long getId() {
-        return id;
-    }
+    @UpdateTimestamp
+    @Column(name = "updated_at")
+    private Date updatedAt;
 
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
+    public void setName(RoleEnum name) {
         this.name = name;
     }
 
-    public Set<User> getUsers() {
-        return users;
+    public RoleEnum getName() {
+        return name;
     }
 
-    public void setUsers(Set<User> users) {
-        this.users = users;
-    }
+    // Getters and setters here....
 }
