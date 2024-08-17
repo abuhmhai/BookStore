@@ -32,24 +32,17 @@ public class HomeController {
     }
 
     @PostMapping("/createUser")
-    public String createuser(@ModelAttribute UserDtls user, HttpSession session)
-    {
-        //System.out.println(user);
+    public String createuser(@ModelAttribute UserDtls user, HttpSession session) {
+        boolean emailExists = userService.checkEmail(user.getEmail());
 
-        boolean f=userService.checkEmail(user.getEmail());
-        if(f)
-        {
-            session.setAttribute("msg", "Email Id already exist");
-        }
-        else {
-            UserDtls userDtls =userService.createUser(user);
-            if(userDtls!=null)
-            {
+        if (emailExists) {
+            session.setAttribute("msg", "Email Id already exists");
+        } else {
+            UserDtls newUser = userService.createUser(user);
+            if (newUser != null && newUser.getId() > 0) { // Check if the ID is a positive number
                 session.setAttribute("msg", "Registration Successful");
-            }
-            else{
-                session.setAttribute("msg", "Something went wrong");
-
+            } else {
+                session.setAttribute("msg", "Something went wrong during registration");
             }
         }
 
