@@ -12,7 +12,7 @@ import javax.persistence.Id;
 public class UserDtls {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int userId;
+    private int id;
     private String fullName;
     private String email;
     private String address;
