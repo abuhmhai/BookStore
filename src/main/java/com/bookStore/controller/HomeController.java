@@ -2,9 +2,9 @@ package com.bookStore.controller;
 
 import com.bookStore.model.UserDtls;
 import com.bookStore.service.UserService;
-import org.apache.catalina.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -26,8 +26,8 @@ public class HomeController {
         return "login";
     }
     @GetMapping("/register")
-    public String register()
-    {
+    public String register(Model model) {
+        model.addAttribute("user", new UserDtls());
         return "register";
     }
 
