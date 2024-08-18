@@ -18,4 +18,5 @@ public class UserDtls {
     private String address;
     private String qualification;
     private String password;
+    private String role;
 }
