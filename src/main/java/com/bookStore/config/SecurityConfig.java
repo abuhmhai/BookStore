@@ -18,7 +18,7 @@ import org.springframework.security.web.authentication.AuthenticationSuccessHand
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
-    private AuthenticationSuccessHandler successHandler;
+    public AuthenticationSuccessHandler customsuccessHandler;
 
     @Bean
     public UserDetailsService getUserDetailsService()
@@ -48,7 +48,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             .antMatchers("/guest/**").hasRole("guest")
             .antMatchers("/user/**").access("hasRole('ROLE_USER')")
             .antMatchers("/**").permitAll().and().formLogin().loginPage("/signin").loginProcessingUrl("/login")
-            .defaultSuccessUrl("/user/").and().csrf().disable();
+            .successHandler(customsuccessHandler).and().csrf()
+            .disable();
     }
 
 }
