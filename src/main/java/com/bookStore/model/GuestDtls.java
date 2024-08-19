@@ -9,7 +9,7 @@ import javax.persistence.Id;
 
 @Data
 @Entity
-public class UserDtls {
+public class GuestDtls {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;

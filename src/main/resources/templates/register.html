@@ -32,7 +32,7 @@
 <div class="container my-5 p-5" style="border:1px solid black;">
     <h4 class="text-center">Register Here</h4>
     <div th:if="${session.msg}" class="alert alert-info" role="alert" th:text="${session.msg}"></div>
-    <div th:if="${session.msg}" th:text="${#session.removeAttribute('msg')}" th:remove="tag"></div> <form class="col-md-4 offset-md-4" th:action="@{/createUser}" method="post" th:object="${user}">
+    <div th:if="${session.msg}" th:text="${#session.removeAttribute('msg')}" th:remove="tag"></div> <form class="col-md-4 offset-md-4" th:action="@{/createGuest}" method="post" th:object="${guest}">
         <div class="mb-3">
             <label for="fullName" class="form-label">Full Name</label>
             <input type="text" class="form-control" id="fullName" name="fullName" th:value="*{fullName}" required>

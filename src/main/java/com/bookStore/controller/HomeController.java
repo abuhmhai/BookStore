@@ -1,7 +1,7 @@
 package com.bookStore.controller;
 
-import com.bookStore.model.UserDtls;
-import com.bookStore.service.UserService;
+import com.bookStore.model.GuestDtls;
+import com.bookStore.service.GuestService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -14,7 +14,7 @@ import javax.servlet.http.HttpSession;
 @Controller
 public class HomeController {
     @Autowired
-    private UserService userService;
+    private GuestService guestService;
     @GetMapping("/")
     public String home()
     {
@@ -27,19 +27,19 @@ public class HomeController {
     }
     @GetMapping("/register")
     public String register(Model model) {
-        model.addAttribute("user", new UserDtls());
+        model.addAttribute("guest", new GuestDtls());
         return "register";
     }
 
-    @PostMapping("/createUser")
-    public String createuser(@ModelAttribute UserDtls user, HttpSession session) {
-        boolean emailExists = userService.checkEmail(user.getEmail());
+    @PostMapping("/createGuest")
+    public String createguest(@ModelAttribute GuestDtls guest, HttpSession session) {
+        boolean emailExists = guestService.checkEmail(guest.getEmail());
 
         if (emailExists) {
             session.setAttribute("msg", "Email Id already exists");
         } else {
-            UserDtls newUser = userService.createUser(user);
-            if (newUser != null && newUser.getId() > 0) { // Check if the ID is a positive number
+            GuestDtls newGuest = guestService.createGuest(guest);
+            if (newGuest != null && newGuest.getId() > 0) { // Check if the ID is a positive number
                 session.setAttribute("msg", "Registration Successful");
             } else {
                 session.setAttribute("msg", "Something went wrong during registration");

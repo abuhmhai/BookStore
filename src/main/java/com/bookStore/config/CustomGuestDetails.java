@@ -1,37 +1,35 @@
 package com.bookStore.config;
 
-import com.bookStore.model.UserDtls;
+import com.bookStore.model.GuestDtls;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
-
-import java.lang.reflect.Array;
+import org.springframework.security.core.userdetails.UserDetails; // Corrected to GuestDetails
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.List;
 
-public class CustomUserDetails implements UserDetails {
+public class CustomGuestDetails implements UserDetails { // Corrected to GuestDetails
 
-    private UserDtls user;
-    public CustomUserDetails(UserDtls user) {
+    private GuestDtls guest;
+
+    public CustomGuestDetails(GuestDtls guest) {
         super();
-        this.user = user;
+        this.guest = guest;
     }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        SimpleGrantedAuthority simpleGrantedAuthority = new SimpleGrantedAuthority(user.getRole());
+        SimpleGrantedAuthority simpleGrantedAuthority = new SimpleGrantedAuthority(guest.getRole()); // Changed user to guest
         return Arrays.asList(simpleGrantedAuthority);
     }
 
     @Override
     public String getPassword() {
-        return user.getPassword();
+        return guest.getPassword(); // Changed user to guest
     }
 
     @Override
     public String getUsername() {
-        return user.getEmail();
+        return guest.getEmail(); // Changed user to guest
     }
 
     @Override

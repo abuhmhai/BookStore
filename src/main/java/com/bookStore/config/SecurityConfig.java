@@ -1,6 +1,5 @@
 package com.bookStore.config;
 
-import org.apache.catalina.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -17,40 +16,42 @@ import org.springframework.security.web.authentication.AuthenticationSuccessHand
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
-    @Autowired
-    public AuthenticationSuccessHandler customsuccessHandler;
-
     @Bean
-    public UserDetailsService getUserDetailsService()
-    {
-        return new UserDetailsServiceImpl();
+    public UserDetailsService getGuestDetailsService() {
+        return new GuestDetailsServiceImpl();
     }
+
     @Bean
     public BCryptPasswordEncoder getPasswordEncoder() {
         return new BCryptPasswordEncoder();
     }
+
     @Bean
     public DaoAuthenticationProvider getDaoAuthenticationProvider() {
         DaoAuthenticationProvider daoAuthenticationProvider = new DaoAuthenticationProvider();
-        daoAuthenticationProvider.setUserDetailsService(getUserDetailsService());
+        daoAuthenticationProvider.setUserDetailsService(getGuestDetailsService());
         daoAuthenticationProvider.setPasswordEncoder(getPasswordEncoder());
         return daoAuthenticationProvider;
+    }
+
+    @Bean
+    public AuthenticationSuccessHandler customSuccessHandler() {
+        return new CustomSuccessHandler();
     }
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth.authenticationProvider(getDaoAuthenticationProvider());
     }
-
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-    http.authorizeRequests().antMatchers("/admin/**").hasRole("ADMIN")
-            .antMatchers("/guest/**").hasRole("guest")
-            .antMatchers("/user/**").access("hasRole('ROLE_USER')")
-            .antMatchers("/**").permitAll().and().formLogin().loginPage("/signin").loginProcessingUrl("/login")
-            .successHandler(customsuccessHandler).and().csrf()
-            .disable();
+        http.authorizeRequests()
+                .antMatchers("/admin/**").hasRole("ADMIN")
+                .antMatchers("/user/**").hasRole("USER")
+                .antMatchers("/guest/**").hasRole("GUEST")
+                .antMatchers("/**").permitAll()
+                .and().formLogin().loginPage("/signin").loginProcessingUrl("/login")
+                .successHandler(customSuccessHandler())
+                .and().csrf().disable();
     }
-
 }
-
