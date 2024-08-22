@@ -45,7 +45,6 @@ public class HomeController {
                 session.setAttribute("msg", "Something went wrong during registration");
             }
         }
-
         return "redirect:/register";
     }
 
